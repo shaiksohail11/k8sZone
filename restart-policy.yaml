@@ -1,0 +1,53 @@
+# Typically pod life-cycle has 3 restart policies they are
+  #  OnFailure
+  #  Always
+  #  Never
+
+# This is Always policy
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: always-restart
+spec:
+  containers:
+    - image: nginx
+      name: nginx-container
+      ports:
+        - containerPort: 80
+          name: nginx-port
+          protocol: TCP
+  restartPolicy: Always
+
+# This is OnFailure policy
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: restart-onfailure
+spec:
+  containers:
+    - image: nginx
+      name: nginx-container
+      ports:
+        - containerPort: 80
+          name: nginx-port
+          protocol: TCP
+  restartPolicy: OnFailure
+
+# This is Never policy
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: never-restart
+spec:
+  containers:
+    - image: nginx
+      name: nginx-container
+      ports:
+        - containerPort: 80
+          name: nginx-port
+          protocol: TCP
+  restartPolicy: Never
+

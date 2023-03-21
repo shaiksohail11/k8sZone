@@ -1,0 +1,28 @@
+# A CronJob creates Jobs on a repeating schedule. 
+# CronJob is meant for performing regular scheduled actions such as backups, report generation.
+
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: cron-job
+spec:
+  schedule: '* * * * *'
+  jobTemplate:
+    metadata:
+      name: cron-pod
+    spec:
+      backoffLimit: 3
+      template:
+        metadata:
+          name: cron-pod
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: nginx-container
+              image: nginx
+              ports:
+                - containerPort: 80
+                  name: nginx-port
+                  protocol: TCP
+

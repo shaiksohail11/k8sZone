@@ -1,0 +1,52 @@
+# To access this application with in the cluster we need an experiment pod..
+# In which we can enter end execute curl command..
+# Here I will be taking an alpine container as an experimentpod.
+# manifest
+# ---
+# apiVersion: v1       # use `apk add curl` --> curl http://<cluster-ip>:35000
+# kind: Pod
+# metadata:
+#   name: exp-pod
+# spec:
+#   containers:
+#     - image: alpine
+#       name: exp
+#       command:
+#         - sleep
+#         - 1d
+---
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: nginx-rs
+spec:
+  minReadySeconds: 5
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      name: nginx
+      labels:
+        app: nginx
+    spec: 
+      containers:
+        - image: nginx
+          name: nginx-container
+          ports:
+             - containerPort: 80
+               name: nginx-port
+---
+apiVersion: v1
+kind: Service
+metadata: 
+  name: cluster-nginx-svc
+spec:
+  selector:
+    app: nginx
+  type: ClusterIP
+  ports:
+    - port: 35000
+      targetPort: 80
+      protocol: TCP

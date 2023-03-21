@@ -1,0 +1,37 @@
+# LoadBalancer service - This will expose application externally with a DNS name.
+---
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: nginx-rs
+spec:
+  minReadySeconds: 5
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      name: nginx
+      labels:
+        app: nginx
+    spec: 
+      containers:
+        - image: nginx
+          name: nginx-container
+          ports:
+             - containerPort: 80
+               name: nginx-port
+---
+apiVersion: v1
+kind: Service
+metadata: 
+  name: lb-nginx-svc
+spec:
+  selector:
+    app: nginx
+  type: LoadBalancer
+  ports:
+    - port: 35000
+      targetPort: 80
+      protocol: TCP

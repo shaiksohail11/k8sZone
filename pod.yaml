@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: Pod
+metadata: 
+  name: myfirstpod
+spec:
+  containers:
+    - image: nginx
+      name: nginx-pod
+      ports:
+        - containerPort: 80
+          name: nginx-port
+          protocol: TCP 
+
+# To enter into the container use `kubectl exec -it myfirstpod -- /bin/bash`

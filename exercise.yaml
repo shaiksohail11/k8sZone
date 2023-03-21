@@ -1,0 +1,31 @@
+# Exercise - Create a replica set with Pod specification with jenkins Pod 
+# and ping -c 4 google.com in alpine as init container with restart policy Never.
+
+---
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: jenkins-rs
+spec:
+  minReadySeconds: 5
+  replicas: 2
+  selector:
+    matchLabels:
+      app: jenkins
+  template:
+    metadata:
+      name: jenkins
+      labels:
+        app: jenkins
+    spec: 
+      containers:
+        - image: jenkins/jenkins
+          name: jenkins-container
+          ports:
+             - containerPort: 8080
+               name: jenkins-port
+              
+      initContainers: 
+        - image: alpine
+          name: alpine-cont
+          command: ["ping","-c","4","google.com"]

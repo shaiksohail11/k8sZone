@@ -1,0 +1,43 @@
+# This is the v2 of jenkins v1
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deploy-v2
+spec:
+  minReadySeconds: 10
+  replicas: 4
+  selector:
+    matchLabels:
+      app: nginx
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+  template:
+    metadata:
+      name: nginx-pod
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - name: nginx
+          image: nginx
+          ports:
+            - containerPort: 80
+              protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-svc-lb
+spec:
+  type: LoadBalancer
+  selector:
+    app: nginx
+  ports:
+    - name: webport
+      port: 35000
+      targetPort: 80

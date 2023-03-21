@@ -1,0 +1,23 @@
+# DAEMONSET:
+# This workload creates a Pod on every node in the k8s cluster
+# This is generally used for running agents i.e. log agents, backup agents, heart beat/monitoring agents
+
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: demon-pod
+spec:
+  minReadySeconds: 5
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - name: alpine-container
+          image: alpine
+          command: ["sleep","1d"]

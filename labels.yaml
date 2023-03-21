@@ -1,0 +1,40 @@
+# To check label wise pods we can use `kubectl get po -l app=nginx` this will show 2 containers
+
+# NAME     READY   STATUS    RESTARTS   AGE
+# nginx1   1/1     Running   0          2m24s
+# nginx2   1/1     Running   0          2m23s
+
+# If we use specific verson label `kubectl get po -l ver=1.0`
+# NAME     READY   STATUS    RESTARTS   AGE
+# nginx1   1/1     Running   0          2m58s
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx1
+  labels:
+    app: nginx
+    ver: "1.0"
+spec:
+  containers:
+    - image: nginx
+      name: nginx
+      ports: 
+        - containerPort: 80
+          protocol: TCP
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx2
+  labels:
+    app: nginx
+    ver: "1.1"
+spec:
+  containers:
+    - image: nginx
+      name: nginx
+      ports: 
+        - containerPort: 80
+          protocol: TCP

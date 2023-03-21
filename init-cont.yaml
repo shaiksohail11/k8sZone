@@ -1,0 +1,21 @@
+# Init container is used to perform specific action before the app-container starts.
+# To describe pod `kubectl describe po nginx`
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: init-demo
+spec: 
+  initContainers:
+    - image: alpine
+      name: alpine-cont
+      command: ["sleep","1d"]
+  
+  containers: 
+    - image: nginx
+      name: nginx-container
+      ports:
+        - containerPort: 80
+          name: nginx-port
+          protocol: TCP
