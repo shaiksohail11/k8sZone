@@ -1,0 +1,107 @@
+---
+pool:
+  name: "Azure Pipelines"
+  vmImage: ubuntu-latest
+
+trigger:
+  - develop
+
+stages:  
+  - stage: printing_disk_Space
+    displayName: printing_disk_Space 
+
+    jobs:
+      - job: print
+        displayName: printing_freedisk
+
+        steps: 
+          - script: sudo df -h
+
+--------------------------------------------------
+
+---
+pool:
+  name: "Azure Pipelines"
+  vmImage: ubuntu-latest
+
+trigger:
+  - develop
+
+stages:  # stage1
+  - stage: stage1 
+    displayName: stage1 
+
+    jobs:
+      - job: build_mac
+        displayName: build_mac
+
+        steps:
+          - script:  echo hello bhai
+          - script:   echo Assalamualaikum bhai
+          - script:  echo Namaste bhai
+          - script:  echo vanakkkam bhai
+          - script:  echo namaskaram bh
+
+  - stage: stage2  # stage 2
+    displayName: stage2
+
+    jobs:
+      - job: build_linux
+        displayName: build_linux
+
+        steps:
+          - script:  echo hello bro
+          - script:   echo Assalamualaikum bro
+          - script:  echo Namaste bro
+          - script:  echo vanakkkam bro
+          - script:  echo namaskaram bro
+      
+  - stage: stage3  # stage 3
+    displayName: stage3
+
+    jobs:
+      - job: build_windows
+        displayName: build_windows
+
+        
+        steps:
+          - script:  echo hello bro
+          - script:   echo Assalamualaikum bro
+          - script:  echo Namaste bro
+          - script:  echo vanakkkam bro
+          - script:  echo namaskaram bro
+
+  - stage: stage4  # stage 4
+    displayName: stage4
+
+    jobs:
+      - job: build_unix
+        displayName: build_unix
+
+        steps:  
+          - script:  echo hello bro
+          - script:   echo Assalamualaikum bro
+          - script:  echo Namaste bro
+          - script:  echo vanakkkam bro
+          - script:  echo namaskaram bro
+
+------------------------------------------------------------------------------
+
+---
+pool:
+  name: "Azure Pipelines"
+  vmImage: ubuntu-latest
+
+trigger:
+  - develop
+
+stages:  
+  - stage: updating_packages
+    displayName: updating_packages
+
+    jobs:
+      - job: print
+        displayName: updating_packages
+
+        steps: 
+          - script: sudo apt update

@@ -1,0 +1,58 @@
+---
+apiVersion: apps/v1	
+kind: Deployment
+metadata:
+  name: mysql-db
+spec:
+  minReadySeconds: 10
+  replicas: 3
+  selector:
+    matchLabels:
+      app: openmrs-db
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        app: openmrs-db
+      spec:
+        containers:
+          - image: mariadb:10.3
+            name: my-sql-db
+            ports:
+              - containerPort: 3306
+                protocol: TCP
+                env:
+                  - name: MYSQL_DATABASE
+                    value: MYSQL
+                  - name: MYSQL_USER
+                    value: shaik
+                  - name: MYSQL_PASSWORD
+                    value: root
+                  - name: MYSQL_ROOT_PASSWORD
+                    value: rootroot
+                command: 
+                  - "mysql --user=shaik --password=root --execute \"SHOW DATABASES;\""
+                volumeMounts:
+                  - mountPath: /var/lib/mysql
+                    name: db-data
+        volumes:
+          - name: db-data
+            emptyDir:
+              sizeLimit: 500Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: db-data
+spec:
+  type: ClusterIP
+  selector:
+    app: openmrs-db
+  ports:
+    - name: db-data
+      port: 3306
+      targetPort: 3306
+      

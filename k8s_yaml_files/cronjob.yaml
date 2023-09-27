@@ -1,0 +1,27 @@
+---
+apiVersion: v1/batch
+kind: CronJob
+metadata:
+  name: cronjob-demo
+  namespace: cron-namespace
+spec:
+  schedule: "0 23 * * *"
+  jobTemplate: 
+    metadata:
+      name: cronjob
+      namespace: cron-namespace
+    spec:
+      backoffLimit: "3"
+      template:
+        metadata:
+          name: cron-pod
+          namespace: cron-namespace
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - image: alpine:3
+              name: alpine
+              command:
+                - sleep
+                - 30s
+               

@@ -1,0 +1,66 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: openmrs-deploy
+spec: 
+  minReadySeconds: 10
+  replicas: 3
+  selector:
+    matchLabels: 
+      app: openmrs-app
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+  template:
+    metadata:
+      name: openmrs-pod
+      labels:
+        app: openmrs-app
+    spec:
+      containers:
+        - image: openmrs/openmrs-core
+          name: openmrs
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          env:
+           - name: OMRS_DB_HOSTNAME
+             value: OMRS
+           - name: OMRS_DB_NAME
+             value: MYSQL
+           - name: OMRS_DB_USERNAME
+             value: sohail
+           - name: OMRS_DB_PASSWORD
+             value: root
+           - name: OMRS_ADMIN_USER_PASSWORD
+             value: rootroot
+          command: 
+            - "curl"
+            - "-f"
+            - "http://localhost:8080/openmrs"
+          volumeMounts:
+            - mountPath: /openmrs/data/
+            - name: my-sql-vol
+            - readOnly: false
+      volumes:
+        - name: openmrs-data
+          emptyDir:
+            sizeLimit: 
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: openmrs-data
+spec:
+  type: ClusterIP
+  selector:
+    app: openmrs-app
+  ports:
+    - name: openmrs-data
+      port: 8080
+      targetPort: 8080
+
+            

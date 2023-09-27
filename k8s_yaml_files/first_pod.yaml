@@ -1,0 +1,17 @@
+---
+apiVersion: v1
+kind: Pod
+metadata: 
+  name: first-yaml
+spec:
+  containers:
+    - image: nginx
+      name: nginx-cont
+      ports:
+        - containerPort: 80
+          protocol: TCP
+    - image: jenkins/jenkins
+      name: jenkins-cont
+      ports:
+        - containerPort: 8080
+          protocol: TCP
